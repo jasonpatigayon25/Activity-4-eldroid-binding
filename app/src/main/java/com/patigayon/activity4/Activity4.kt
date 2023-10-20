@@ -2,43 +2,36 @@ package com.patigayon.activity4
 
 import android.content.Context
 import android.os.Bundle
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.patigayon.activity4.databinding.Activity4Binding
 
 class Activity4 : AppCompatActivity() {
 
+    private lateinit var binding: Activity4Binding
     private val sharedPrefFile = "settingsPreferences"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_4)
 
-        val lightModeRadioButton = findViewById<RadioButton>(R.id.lightMode)
-        val darkModeRadioButton = findViewById<RadioButton>(R.id.darkMode)
-        val notificationCheckBox = findViewById<CheckBox>(R.id.notificationCheckbox)
-        val emailEditText = findViewById<EditText>(R.id.emailEditText)
-        val nicknameEditText = findViewById<EditText>(R.id.nicknameEditText)
-        val saveButton = findViewById<Button>(R.id.saveButton)
+        binding = Activity4Binding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val sharedPreferences = getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
 
-        lightModeRadioButton.isChecked = sharedPreferences.getBoolean("lightMode", true)
-        darkModeRadioButton.isChecked = !lightModeRadioButton.isChecked
-        notificationCheckBox.isChecked = sharedPreferences.getBoolean("notifications", false)
-        emailEditText.setText(sharedPreferences.getString("email", ""))
-        nicknameEditText.setText(sharedPreferences.getString("nickname", ""))
+        binding.lightMode.isChecked = sharedPreferences.getBoolean("lightMode", true)
+        binding.darkMode.isChecked = !binding.lightMode.isChecked
+        binding.notificationCheckbox.isChecked = sharedPreferences.getBoolean("notifications", false)
+        binding.emailEditText.setText(sharedPreferences.getString("email", ""))
+        binding.nicknameEditText.setText(sharedPreferences.getString("nickname", ""))
 
-        saveButton.setOnClickListener {
+        binding.saveButton.setOnClickListener {
             val editor = sharedPreferences.edit()
 
-            editor.putBoolean("lightMode", lightModeRadioButton.isChecked)
-            editor.putBoolean("notifications", notificationCheckBox.isChecked)
-            editor.putString("email", emailEditText.text.toString())
-            editor.putString("nickname", nicknameEditText.text.toString())
+            editor.putBoolean("lightMode", binding.lightMode.isChecked)
+            editor.putBoolean("notifications", binding.notificationCheckbox.isChecked)
+            editor.putString("email", binding.emailEditText.text.toString())
+            editor.putString("nickname", binding.nicknameEditText.text.toString())
 
             editor.apply()
 
